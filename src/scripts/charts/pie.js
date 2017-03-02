@@ -18,7 +18,7 @@
     // Specify a fixed height for the chart as a string (i.e. '100px' or '50%')
     height: undefined,
     // Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
-    chartPadding: 5,
+    chartPadding: {top: 5, right: 5, bottom: 5, left: 5},
     // Override the class names that are used to generate the SVG structure of the chart
     classNames: {
       chartPie: 'ct-chart-pie',
