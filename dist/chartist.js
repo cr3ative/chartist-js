@@ -4,7 +4,7 @@
     define('Chartist', [], function () {
       return (root['Chartist'] = factory());
     });
-  } else if (typeof exports === 'object') {
+  } else if (typeof module === 'object' && module.exports) {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like environments that support module.exports,
     // like Node.
@@ -14,8 +14,8 @@
   }
 }(this, function () {
 
-/* Chartist.js 0.10.0
- * Copyright © 2016 Gion Kunz
+/* Chartist.js 0.10.1
+ * Copyright © 2017 Gion Kunz
  * Free to use under either the WTFPL license or the MIT license.
  * https://raw.githubusercontent.com/gionkunz/chartist-js/master/LICENSE-WTFPL
  * https://raw.githubusercontent.com/gionkunz/chartist-js/master/LICENSE-MIT
@@ -26,7 +26,7 @@
  * @module Chartist.Core
  */
 var Chartist = {
-  version: '0.10.0'
+  version: '0.10.1'
 };
 
 (function (window, document, Chartist) {
@@ -993,7 +993,8 @@ var Chartist = {
     if(useForeignObject) {
       // We need to set width and height explicitly to px as span will not expand with width and height being
       // 100% in all browsers
-      var content = '<span class="' + classes.join(' ') + '" style="' +
+      var content = '<span class="' + classes.join(' ') +
+      '" xmlns="' + Chartist.namespaces.xhtml + '" style="' +
         axis.units.len + ': ' + Math.round(positionalData[axis.units.len]) + 'px; ' +
         axis.counterUnits.len + ': ' + Math.round(positionalData[axis.counterUnits.len]) + 'px">' +
         labels[index] + '</span>';
@@ -2259,13 +2260,10 @@ var Chartist = {
    * @return {Chartist.Svg} The wrapper of the current element
    */
   function addClass(names) {
-    this._node.setAttribute('class',
-      this.classes(this._node)
-        .concat(names.trim().split(/\s+/))
-        .filter(function(elem, pos, self) {
-          return self.indexOf(elem) === pos;
-        }).join(' ')
-    );
+    var arr = this.classes(this._node).concat(names.trim().split(/\s+/));
+    this._node.setAttribute('class', arr.filter(function(elem, pos) {
+      return arr.indexOf(elem) === pos;
+    }).join(' '));
 
     return this;
   }
@@ -4108,7 +4106,7 @@ var Chartist = {
     // Specify a fixed height for the chart as a string (i.e. '100px' or '50%')
     height: undefined,
     // Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
-    chartPadding: 5,
+    chartPadding: {top: 5, right: 5, bottom: 5, left: 5},
     // Override the class names that are used to generate the SVG structure of the chart
     classNames: {
       chartPie: 'ct-chart-pie',
